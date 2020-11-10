@@ -1,8 +1,18 @@
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11")
 set(PROJECT_NAME qcpdocumentobject)
-set(PROJECT_NAME_D qcpdocumentobjectd)
 project (${PROJECT_NAME})
+
+## Defult build type: Debug ##
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+## Debug definition: ##
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  add_definitions("-DDEBUG")
+endif()
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O0")
 
 find_package(Qt4 COMPONENTS 
 					QtCore 
@@ -25,8 +35,14 @@ link_directories(
     ${QCUSTOMPLOT_HOME}/build
 )
 
-add_library(${PROJECT_NAME} SHARED src/qcpdocumentobject.cpp)
-add_library(${PROJECT_NAME_D} SHARED src/qcpdocumentobject.cpp)
-target_link_libraries(${PROJECT_NAME} qcustomplot)
-target_link_libraries(${PROJECT_NAME_D} qcustomplotd)
-install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME_D} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	add_library(${PROJECT_NAME}d SHARED src/qcpdocumentobject.cpp)
+	target_link_libraries(${PROJECT_NAME}d qcustomplotd)
+	install(TARGETS ${PROJECT_NAME}d DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)
+else()
+	add_library(${PROJECT_NAME} SHARED src/qcpdocumentobject.cpp)
+	target_link_libraries(${PROJECT_NAME} qcustomplot)
+	install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)
+endif()
+
+

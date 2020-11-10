@@ -8,6 +8,8 @@ git clone https://github.com/zohannn/qcpdocumentobject.git
 cd qcpdocumentobject
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make
+cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
