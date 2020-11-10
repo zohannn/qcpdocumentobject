@@ -39,10 +39,12 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	add_library(${PROJECT_NAME}d SHARED src/qcpdocumentobject.cpp)
 	target_link_libraries(${PROJECT_NAME}d qcustomplotd)
 	install(TARGETS ${PROJECT_NAME}d DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)
-else()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 	add_library(${PROJECT_NAME} SHARED src/qcpdocumentobject.cpp)
 	target_link_libraries(${PROJECT_NAME} qcustomplot)
 	install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)
+else()
+	MESSAGE(FATAL_ERROR "Please specify -DCMAKE_BUILD_TYPE=Debug|Release")
 endif()
 
 
